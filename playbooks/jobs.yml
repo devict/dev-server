@@ -2,11 +2,12 @@
 - hosts: all
   remote_user: www-data
   tasks:
-      # Jobs
+    # Jobs
     - name: 'Jobs: git repo'
       git:
         repo: https://github.com/devict/jobs.devict
         dest: /var/www/jobs
+        force: yes
 
     - name: 'Jobs: .env file'
       template:
