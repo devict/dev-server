@@ -2,14 +2,15 @@
 - hosts: all
   remote_user: root
   tasks:
-    - name: Install make
-      apt:
-        name: make
-        state: present
 
+    # Users and Groups -------------------------
     - name: www-data group
       group:
         name: www-data
+
+    - name: docker group
+      group:
+        name: docker
 
     - name: www-data user
       user:
@@ -19,8 +20,45 @@
         groups:
           - www-data
           - sudo
+          - docker
 
     - name: 'ssh key: sethetter'
       authorized_key:
         key: https://github.com/sethetter.keys
         user: www-data
+
+    - name: Passwordless sudo
+      lineinfile:
+        path: /etc/sudoers
+        state: present
+        regexp: '^%sudo'
+        line: '%sudo ALL=(ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'
+
+
+    # Packages
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install make
+      apt:
+        name: make
+        state: present
+
+    - name: Install docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Install docker-compose
+      apt:
+        name: docker-compose
+        state: present
+
+    - name: Docker service
+      systemd:
+        daemon_reload: true
+        name: docker
+        enabled: true
+        state: started

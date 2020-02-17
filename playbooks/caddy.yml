@@ -57,7 +57,8 @@
         dest: /etc/systemd/system/caddy.service
 
     - name: Make sure Caddy is running
-      service:
+      systemd:
+        daemon_reload: true
         name: caddy
         state: restarted
         enabled: yes
