@@ -1,0 +1,11 @@
+test.devict.org {
+  root /var/www/test/
+}
+
+# jobs2.devict.org {
+#   proxy / 0.0.0.0:8001 {
+#     transparent
+#   }
+#   log stdout
+#   errors stdout
+# }

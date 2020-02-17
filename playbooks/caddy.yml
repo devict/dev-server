@@ -1,0 +1,63 @@
+---
+- hosts: all
+  remote_user: root
+  tasks:
+    - name: Ensure /var/www dir exists
+      file:
+        path: /var/www
+        state: directory
+        owner: www-data
+        group: www-data
+
+    - name: Ensure /var/www/test dir exists
+      file:
+        path: /var/www/test
+        state: directory
+        owner: www-data
+        group: www-data
+
+    - name: Test HTML page
+      copy:
+        src: ../files/caddy/test.html
+        dest: /var/www/test/index.html
+        owner: www-data
+        group: www-data
+
+    - name: Ensure /etc/caddy dir exists
+      file:
+        path: /etc/caddy
+        state: directory
+        owner: root
+        group: www-data
+
+    - name: Ensure /etc/ssl/caddy dir exists
+      file:
+        path: /etc/ssl/caddy
+        state: directory
+        owner: www-data
+        group: root
+
+    - name: Put Caddyfile in place
+      template:
+        src: ../files/caddy/Caddyfile
+        dest: /etc/caddy/Caddyfile
+
+    - name: Run Caddy install script
+      script: ../files/caddy/install.sh
+      args:
+        creates: /usr/local/bin/caddy
+
+    - name: Allow Caddy to bind to ports below 1024
+      command:
+        cmd: 'setcap cap_net_bind_service=+ep /usr/local/bin/caddy'
+
+    - name: Put Caddy service in place
+      template:
+        src: ../files/caddy/caddy.service
+        dest: /etc/systemd/system/caddy.service
+
+    - name: Make sure Caddy is running
+      service:
+        name: caddy
+        state: restarted
+        enabled: yes

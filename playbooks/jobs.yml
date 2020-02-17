@@ -1,0 +1,32 @@
+---
+- hosts: all
+  remote_user: www-data
+  tasks:
+      # Jobs
+    - name: 'Jobs: git repo'
+      git:
+        repo: https://github.com/devict/jobs.devict
+        dest: /var/www/jobs
+
+    - name: 'Jobs: .env file'
+      template:
+        src: ../files/jobs/env
+        dest: /var/www/jobs/.env
+
+    - name: 'Jobs: .db.env file'
+      template:
+        src: ../files/jobs/db.env
+        dest: /var/www/jobs/.db.env
+
+    - name: 'Jobs: systemd service definition'
+      template:
+        src: ../files/jobs/jobs.service
+        dest: /etc/systemd/system/jobs.service
+
+    - name: 'Jobs: systemd service running'
+      service:
+        name: jobs
+        state: restarted
+        enabled: true
+
+

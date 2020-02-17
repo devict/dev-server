@@ -1,0 +1,28 @@
+[Unit]
+Description=Jobs Service
+Requires=docker.service
+After=docker.service
+
+[Service]
+Restart=always
+
+User=www-data
+Group=www-data
+
+WorkingDirectory=/var/www/jobs
+
+# Remove old containers, images and volumes
+ExecStartPre=/usr/local/bin/docker-compose down
+ExecStartPre=/usr/local/bin/docker-compose rm -f
+
+# Should match the `make deps` command in jobs repo
+ExecStartPre=/usr/bin/docker run --rm -v /var/www/jobs:/app composer install
+ExecStartPre=/usr/local/bin/docker-compose run --rm client npm run prod
+
+ExecStart=/usr/local/bin/docker-compose up caddy php-fpm db
+
+# Compose down, remove containers and volumes
+ExecStop=/usr/local/bin/docker-compose down
+
+[Install]
+WantedBy=multi-user.target

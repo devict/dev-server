@@ -1,0 +1,26 @@
+---
+- hosts: all
+  remote_user: root
+  tasks:
+    - name: Install make
+      apt:
+        name: make
+        state: present
+
+    - name: www-data group
+      group:
+        name: www-data
+
+    - name: www-data user
+      user:
+        name: www-data
+        shell: /bin/bash
+        expires: -1
+        groups:
+          - www-data
+          - sudo
+
+    - name: 'ssh key: sethetter'
+      authorized_key:
+        key: https://github.com/sethetter.keys
+        user: www-data
