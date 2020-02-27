@@ -12,8 +12,8 @@ Ansible playbooks for managing the configuration of the devICT project server!
 There are a few files that need to be put in place.
 
 - `hosts`
-- `files/jobs/.env`
-- `files/jobs/.db.env`
+- `files/jobs/env`
+- `files/jobs/db.env`
 
 ## Commands
 
