@@ -2,7 +2,7 @@ test.devict.org {
   root /var/www/test/
 }
 
-jobs2.devict.org {
+jobs.devict.org {
   proxy / 0.0.0.0:8001 {
     transparent
   }
