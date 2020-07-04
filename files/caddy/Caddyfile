@@ -9,3 +9,11 @@ jobs.devict.org {
   log stdout
   errors stdout
 }
+
+vote.devict.org {
+  proxy / 0.0.0.0:8002 {
+    transparent
+  }
+  log stdout
+  errors stdout
+}
