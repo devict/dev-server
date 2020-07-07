@@ -1,5 +1,5 @@
 [Unit]
-Description=VoteICT Service
+Description=VoteLocal Service
 Requires=docker.service
 After=docker.service
 
@@ -9,14 +9,14 @@ Restart=always
 User=www-data
 Group=www-data
 
-WorkingDirectory=/var/www/voteict
+WorkingDirectory=/var/www/votelocal
 
 # Remove old containers, images and volumes
 ExecStartPre=/usr/bin/docker-compose down
 ExecStartPre=/usr/bin/docker-compose rm -f
 
-# Should match the `make deps` command in voteict repo
-ExecStartPre=/usr/bin/docker run --rm -v /var/www/voteict:/app composer install
+# Should match the `make deps` command in votelocal repo
+ExecStartPre=/usr/bin/docker run --rm -v /var/www/votelocal:/app composer install
 ExecStartPre=/usr/bin/docker-compose run --rm client npm run prod
 
 ExecStart=/usr/bin/docker-compose up caddy php-fpm db

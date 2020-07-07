@@ -1,0 +1,38 @@
+---
+- hosts: all
+  remote_user: www-data
+  tasks:
+    # VoteLocal
+    - name: 'VoteLocal: git repo'
+      git:
+        repo: https://github.com/devict/votelocal
+        dest: /var/www/votelocal
+        force: yes
+
+    - name: 'VoteLocal: .env file'
+      template:
+        src: ../files/votelocal/env
+        dest: /var/www/votelocal/.env
+
+    - name: 'VoteLocal: .db.env file'
+      template:
+        src: ../files/votelocal/db.env
+        dest: /var/www/votelocal/.db.env
+
+    - name: 'VoteLocal: systemd service definition'
+      become: yes
+      become_user: root
+      template:
+        src: ../files/votelocal/votelocal.service
+        dest: /etc/systemd/system/votelocal.service
+
+    - name: 'VoteLocal: systemd service running'
+      become: yes
+      become_user: root
+      systemd:
+        daemon_reload: true
+        name: votelocal
+        state: restarted
+        enabled: true
+
+

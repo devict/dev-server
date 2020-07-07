@@ -9,5 +9,5 @@ caddy:
 jobs:
 	ansible-playbook -i hosts playbooks/jobs.yml
 
-voteict:
-	ansible-playbook -i hosts playbooks/voteict.yml
+votelocal:
+	ansible-playbook -i hosts playbooks/votelocal.yml
