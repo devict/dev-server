@@ -5,23 +5,27 @@ After=docker.service
 
 [Service]
 Restart=always
+StandardOutput=journal
 
 User=www-data
 Group=www-data
 
 WorkingDirectory=/var/www/votelocal
 
-# Remove old containers, images and volumes
+# Ensure stopped first
 ExecStartPre=/usr/bin/docker-compose down
-ExecStartPre=/usr/bin/docker-compose rm -f
 
 # Should match the `make deps` command in votelocal repo
 ExecStartPre=/usr/bin/docker run --rm -v /var/www/votelocal:/app composer install
 ExecStartPre=/usr/bin/docker-compose run --rm client npm run prod
 
+# TODO: This command is needed to run after a service restart, but it fails when trying to run as a post command :(
+# docker-compose run -e MYSQL_PWD=$(cat /var/www/votelocal/.db.env | grep MYSQL_PASSWORD | cut -d'=' -f2) --rm db mysql -e 'select 1;' --host=db --user=votelocal votelocal
+
 ExecStart=/usr/bin/docker-compose up caddy php-fpm db
 
-# Compose down, remove containers and volumes
+
+# Compose down, remove containers, keep volumes
 ExecStop=/usr/bin/docker-compose down
 
 [Install]

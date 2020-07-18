@@ -10,7 +10,7 @@ jobs.devict.org {
   errors stdout
 }
 
-vote.devict.org {
+votelocalks.org {
   proxy / 0.0.0.0:8002 {
     transparent
   }
