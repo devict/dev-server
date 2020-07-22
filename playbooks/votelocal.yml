@@ -19,6 +19,11 @@
         src: ../files/votelocal/db.env
         dest: /var/www/votelocal/.db.env
 
+    - name: 'VoteLocal: .my.cnf file'
+      template:
+        src: ../files/votelocal/my.cnf
+        dest: /var/www/votelocal/.my.cnf
+
     - name: 'VoteLocal: systemd service definition'
       become: yes
       become_user: root

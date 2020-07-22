@@ -3,3 +3,4 @@ files/jobs/env
 files/jobs/db.env
 files/votelocal/env
 files/votelocal/db.env
+files/votelocal/my.cnf
