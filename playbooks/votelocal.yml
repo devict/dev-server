@@ -40,4 +40,8 @@
         state: restarted
         enabled: true
 
+    - name: 'VoteLocal: post-restart operation'
+      command:
+        chdir: /var/www/votelocal
+        cmd: docker-compose run --rm db mysql -e 'select 1;' votelocal
 
