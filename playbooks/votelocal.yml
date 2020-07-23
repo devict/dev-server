@@ -31,6 +31,35 @@
         src: ../files/votelocal/votelocal.service
         dest: /etc/systemd/system/votelocal.service
 
+    - name: 'VoteLocal: systemd scheduled jobs'
+      become: yes
+      become_user: root
+      template:
+        src: ../files/votelocal/votelocal-scheduled-jobs.service
+        dest: /etc/systemd/system/votelocal-scheduled-jobs.service
+
+    - name: 'VoteLocal: systemd scheduled jobs timer'
+      become: yes
+      become_user: root
+      template:
+        src: ../files/votelocal/votelocal-scheduled-jobs.timer
+        dest: /etc/systemd/system/votelocal-scheduled-jobs.timer
+
+    - name: 'VoteLocal: systemd DB backups'
+      become: yes
+      become_user: root
+      template:
+        src: ../files/votelocal/votelocal-backup.service
+        dest: /etc/systemd/system/votelocal-backup.service
+
+    - name: 'VoteLocal: systemd DB backups timer'
+      become: yes
+      become_user: root
+      template:
+        src: ../files/votelocal/votelocal-backup.timer
+        dest: /etc/systemd/system/votelocal-backup.timer
+
+
     - name: 'VoteLocal: systemd service running'
       become: yes
       become_user: root
@@ -44,4 +73,22 @@
       command:
         chdir: /var/www/votelocal
         cmd: docker-compose run --rm db mysql -e 'select 1;' votelocal
+
+    - name: 'VoteLocal: systemd scheduled jobs running'
+      become: yes
+      become_user: root
+      systemd:
+        daemon_reload: true
+        name: votelocal-scheduled-jobs.timer
+        state: restarted
+        enabled: true
+
+    - name: 'VoteLocal: systemd DB backups running'
+      become: yes
+      become_user: root
+      systemd:
+        daemon_reload: true
+        name: votelocal-backup.timer
+        state: restarted
+        enabled: true
 

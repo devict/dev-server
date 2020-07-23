@@ -11,4 +11,3 @@ jobs:
 
 votelocal:
 	ansible-playbook -i hosts playbooks/votelocal.yml
-	echo "Now go fix the DB connection on the server! See the votelocal service file for details."
