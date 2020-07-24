@@ -1,0 +1,9 @@
+[Unit]
+Description=VoteLocal DB backup runner.
+
+[Service]
+Type=oneshot
+WorkingDirectory=/var/www/votelocal
+User=www-data
+Group=www-data
+ExecStart=/var/www/votelocal/backup.sh

@@ -8,3 +8,6 @@ caddy:
 
 jobs:
 	ansible-playbook -i hosts playbooks/jobs.yml
+
+votelocal:
+	ansible-playbook -i hosts playbooks/votelocal.yml

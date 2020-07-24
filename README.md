@@ -15,6 +15,8 @@ There are a few files that need to be put in place.
 - `files/jobs/env`
 - `files/jobs/db.env`
 
+You will also need ssh access to the host you're applying this to via ansible.
+
 ## Commands
 
 #### `make setup`

@@ -1,0 +1,9 @@
+[Unit]
+Description=VoteLocal scheduled jobs runner.
+
+[Service]
+Type=oneshot
+WorkingDirectory=/var/www/votelocal
+User=www-data
+Group=www-data
+ExecStart=/usr/bin/docker-compose run --rm php php artisan schedule:run
