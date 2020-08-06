@@ -11,3 +11,6 @@ jobs:
 
 votelocal:
 	ansible-playbook -i hosts playbooks/votelocal.yml
+
+votelocal-staging:
+	ansible-playbook -i hosts playbooks/votelocal-staging.yml

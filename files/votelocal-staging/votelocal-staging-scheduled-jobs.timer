@@ -1,0 +1,10 @@
+[Unit]
+Description=VoteLocal (Staging) scheduled jobs timer
+
+[Timer]
+OnBootSec=5m
+OnUnitActiveSec=3m
+Unit=votelocal-staging-scheduled-jobs.service
+
+[Install]
+WantedBy=multi-user.target

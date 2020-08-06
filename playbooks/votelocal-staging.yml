@@ -1,0 +1,69 @@
+---
+- hosts: all
+  remote_user: www-data
+  tasks:
+    - name: 'VoteLocal (Staging): git repo'
+      git:
+        repo: https://github.com/devict/votelocal
+        version: staging
+        dest: /var/www/votelocal-staging
+        force: yes
+
+    - name: 'VoteLocal (Staging): .env file'
+      template:
+        src: ../files/votelocal-staging/env
+        dest: /var/www/votelocal-staging/.env
+
+    - name: 'VoteLocal (Staging): .db.env file'
+      template:
+        src: ../files/votelocal-staging/db.env
+        dest: /var/www/votelocal-staging/.db.env
+
+    - name: 'VoteLocal (Staging): .my.cnf file'
+      template:
+        src: ../files/votelocal-staging/my.cnf
+        dest: /var/www/votelocal-staging/.my.cnf
+
+    - name: 'VoteLocal (Staging): systemd service definition'
+      become: yes
+      become_user: root
+      template:
+        src: ../files/votelocal-staging/votelocal-staging.service
+        dest: /etc/systemd/system/votelocal-staging.service
+
+    - name: 'VoteLocal (Staging): systemd scheduled jobs'
+      become: yes
+      become_user: root
+      template:
+        src: ../files/votelocal-staging/votelocal-staging-scheduled-jobs.service
+        dest: /etc/systemd/system/votelocal-staging-scheduled-jobs.service
+
+    - name: 'VoteLocal (Staging): systemd scheduled jobs timer'
+      become: yes
+      become_user: root
+      template:
+        src: ../files/votelocal-staging/votelocal-staging-scheduled-jobs.timer
+        dest: /etc/systemd/system/votelocal-staging-scheduled-jobs.timer
+
+    - name: 'VoteLocal (Staging): systemd service running'
+      become: yes
+      become_user: root
+      systemd:
+        daemon_reload: true
+        name: votelocal-staging
+        state: restarted
+        enabled: true
+
+    - name: 'VoteLocal (Staging): post-restart operation'
+      command:
+        chdir: /var/www/votelocal-staging
+        cmd: docker-compose run --rm db mysql -e 'select 1;' votelocal
+
+    - name: 'VoteLocal (Staging): systemd scheduled jobs running'
+      become: yes
+      become_user: root
+      systemd:
+        daemon_reload: true
+        name: votelocal-staging-scheduled-jobs.timer
+        state: restarted
+        enabled: true
