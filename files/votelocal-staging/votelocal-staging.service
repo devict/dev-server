@@ -17,6 +17,7 @@ ExecStartPre=/usr/bin/docker-compose down
 
 # Should match the `make deps` command in votelocal repo
 ExecStartPre=/usr/bin/docker run --rm -v /var/www/votelocal-staging:/app composer install
+ExecStartPre=/usr/bin/docker-compose run --rm client npm i
 ExecStartPre=/usr/bin/docker-compose run --rm client npm run prod
 # ExecStartPre=/usr/bin/docker-compose run --rm php artisan view:cache
 # ExecStartPre=/usr/bin/docker-compose run --rm php artisan artisan optimize

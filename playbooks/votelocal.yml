@@ -59,7 +59,6 @@
         src: ../files/votelocal/votelocal-backup.timer
         dest: /etc/systemd/system/votelocal-backup.timer
 
-
     - name: 'VoteLocal: systemd service running'
       become: yes
       become_user: root
