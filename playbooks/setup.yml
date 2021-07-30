@@ -2,7 +2,6 @@
 - hosts: all
   remote_user: root
   tasks:
-
     # Users and Groups -------------------------
     - name: www-data group
       group:
@@ -22,19 +21,23 @@
           - sudo
           - docker
 
-    - name: 'ssh key: sethetter'
+    - name: "ssh key: sethetter"
       authorized_key:
         key: https://github.com/sethetter.keys
+        user: www-data
+
+    - name: "ssh key: jakesuellentrop"
+      authorized_key:
+        key: https://github.com/jakesuellentrop.keys
         user: www-data
 
     - name: Passwordless sudo
       lineinfile:
         path: /etc/sudoers
         state: present
-        regexp: '^%sudo'
-        line: '%sudo ALL=(ALL) NOPASSWD: ALL'
-        validate: 'visudo -cf %s'
-
+        regexp: "^%sudo"
+        line: "%sudo ALL=(ALL) NOPASSWD: ALL"
+        validate: "visudo -cf %s"
 
     # Packages
     - name: Update apt cache
